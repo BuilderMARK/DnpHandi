@@ -1,0 +1,85 @@
+@page "/AddAdult"
+@using Models
+@using LoginExample.Data
+@using Microsoft.AspNetCore.Components
+@inject IAdultService Persistence
+@inject NavigationManager NavigationManager
+
+<h3>Add adult</h3>
+
+<label>Fill in all of the fields</label>
+<EditForm Model="@addAdult" OnValidSubmit="@AddNewAdult">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class="form-group">
+        First name:<br/>
+        <InputText @bind-Value="addAdult.FirstName"/>
+    </div>
+    <div class="form-group">
+        Last name:<br/>
+        <InputText @bind-Value="addAdult.LastName"/>
+    </div>
+    <div class="form-group">
+        Job title:<br/>
+        <InputText @bind-Value="addAdult.Jobtitle"/>
+    </div>
+    <div class="form-group">
+        Hair color:<br/>
+       <InputSelect @bind-Value="addAdult.HairColor">
+                   <option value="">Select HairColor ...</option>
+                   <option value="Blue">Blue</option>
+                   <option value="Green">Green</option>
+                   <option value="Red">Red</option>
+                   <option value="Black">Black</option>
+                   <option value="White">White</option>
+                   <option value="LimeRed">LimeRed</option>
+               </InputSelect>
+    </div>
+    <div class="form-group">
+        Eye color:<br/>
+           <InputSelect @bind-Value="addAdult.EyeColor">
+                          <option value="">Select EyeColor ...</option>
+                          <option value="Blue">Blue</option>
+                          <option value="Green">Green</option>
+                          <option value="Red">Red</option>
+                          <option value="Black">Black</option>
+                          <option value="Whilte">White</option>
+                          <option value="No Eyes">No EYES</option>
+                      </InputSelect>
+    </div>
+    <div class="form-group">
+        Age:<br/>
+        <InputNumber @bind-Value="addAdult.Age"/>
+    </div>
+    <div class="form-group">
+        Weight:<br/>
+        <InputNumber @bind-Value="addAdult.Weight"/>
+    </div>
+    <div class="form-group">
+        Height:<br/>
+        <InputNumber @bind-Value="addAdult.Hight"/>
+    </div>
+    <div class="form-group">
+        Sex:<br/>
+        <InputSelect @bind-Value="addAdult.Sex">
+            <option value="">Select sex ...</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+        </InputSelect>
+    </div>
+    <p class="actions">
+        <button class="btn btn-outline-dark" type="submit">Create</button>
+    </p>
+</EditForm>
+
+@code {
+    private Adult addAdult = new Adult();
+    private string errorLabel;
+
+    private void AddNewAdult()
+    {
+        Persistence.AddAdult(addAdult);
+        NavigationManager.NavigateTo("/ViewAdults");
+    }
+}
+

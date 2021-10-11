@@ -1,0 +1,189 @@
+@page "/ViewAdults"
+@using LoginExample.Models
+@using LoginExample.Data
+@inject IAdultService Persistence
+<h3>ViewAdults</h3>
+
+<p>
+    Search by adult id: <input type="number" @oninput="@((arg) => FilterByAdultId(arg))" style="width:50px"/>
+</p>
+
+<p>
+    Search by first name: <input type="text" @oninput="@((arg) => FilterByFirstName(arg))" style="width:200px"/>
+</p>
+
+<p>
+    Filter by sex:
+    <select class="form-control selectpicker" @onchange="@((arg) => FilterBySex(arg))" style="width:100px">
+        <option>Any</option>
+        <option>Male</option>
+        <option>Female</option>
+    </select>
+</p>
+
+
+@if (allAdults == null) {
+    <p>
+        <em>Loading...</em>
+    </p>
+} else if (!allAdults.Any()) {
+    <p>
+        <em>No adults in the list. Please add some.</em>
+    </p>
+} else {
+    <AuthorizeView>
+        <NotAuthorized>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Job title</th>
+                    <th>Hair color</th>
+                    <th>Eye color</th>
+                    <th>Age</th>
+                    <th>Weight</th>
+                    <th>Height</th>
+                    <th>Sex</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in showAdults)
+                {
+                    <tr>
+                        <td>@item.id</td>
+                        <td>@item.FirstName</td>
+                        <td>@item.LastName</td>
+                        <td>@item.Jobtitle</td>
+                        <td>@item.HairColor</td>
+                        <td>@item.EyeColor</td>
+                        <td>@item.Age</td>
+                        <td>@item.Weight</td>
+                        <td>@item.Hight</td>
+                        <td>@item.Sex</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </NotAuthorized>
+        <Authorized>
+            <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>Job title</th>
+                                <th>Hair color</th>
+                                <th>Eye color</th>
+                                <th>Age</th>
+                                <th>Weight</th>
+                                <th>Height</th>
+                                <th>Sex</th>
+                                <th>Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in showAdults)
+                            {
+                                <tr>
+                                    <td>@item.id</td>
+                                    <td>@item.FirstName</td>
+                                    <td>@item.LastName</td>
+                                    <td>@item.Jobtitle</td>
+                                    <td>@item.HairColor</td>
+                                    <td>@item.EyeColor</td>
+                                    <td>@item.Age</td>
+                                    <td>@item.Weight</td>
+                                    <td>@item.Hight</td>
+                                    <td>@item.Sex</td>
+                                    <td>
+                                        <button @onclick="@(() => RemoveAdult(item.id))">
+                                            <i class="oi oi-trash" style="color:red"/>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+        </Authorized>
+    </AuthorizeView>
+}
+
+@code {
+    private IList<Adult> allAdults;
+    private IList<Adult> showAdults;
+
+    private int? id;
+    private string firstName;
+    private string sex;
+    
+    
+    private void FilterByAdultId(ChangeEventArgs eventArgs)
+    {
+        id = null;
+        try
+        {
+            id = int.Parse(eventArgs.Value.ToString());
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByFirstName(ChangeEventArgs changeEventArgs)
+    {
+        firstName = null;
+        try
+        {
+            firstName = changeEventArgs.Value.ToString();
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+    
+    private void FilterBySex(ChangeEventArgs changeEventArgs)
+    {
+        sex = null;
+        try
+        {
+            if (changeEventArgs.Value.ToString().Equals("Male"))
+            {
+                sex = "M";
+            }
+            else if (changeEventArgs.Value.ToString().Equals("Female"))
+            {
+                sex = "F";
+            }
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void ExecuteFilter()
+    {
+        showAdults = allAdults.Where(a => (id!=null && a.id == id || id == null) &&
+                                            (firstName != null && a.FirstName.Contains(firstName, StringComparison.OrdinalIgnoreCase) || firstName == null || firstName.Length == 0) &&
+                                            (sex!=null && a.Sex == sex || sex == null) ).ToList();
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        allAdults = Persistence.ReadAllAdults();
+        showAdults = allAdults;
+    }
+
+    private void RemoveAdult(int adultID)
+    {
+        Adult removeAdult = allAdults.First(a => a.id == adultID);
+        Persistence.DeleteAdult(removeAdult);
+        allAdults.Remove(removeAdult);
+    }
+
+}
