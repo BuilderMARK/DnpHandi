@@ -94,5 +94,17 @@
     "Weight": 21,
     "Hight": 32,
     "Sex": "F"
+  },
+  {
+    "Jobtitle": "rkjrej",
+    "id": 2,
+    "FirstName": "ejkkjew",
+    "LastName": "jrkkjre",
+    "HairColor": "Black",
+    "EyeColor": "Green",
+    "Age": 20,
+    "Weight": 20,
+    "Hight": 20,
+    "Sex": "M"
   }
 ]

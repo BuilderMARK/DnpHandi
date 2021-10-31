@@ -1,6 +1,7 @@
 @page "/ViewAdults"
 @using LoginExample.Models
-@using LoginExample.Data
+
+@using ToDo.Data
 @inject IAdultService Persistence
 <h3>ViewAdults</h3>
 
@@ -175,14 +176,14 @@
     
     protected override async Task OnInitializedAsync()
     {
-        allAdults = Persistence.ReadAllAdults();
+        allAdults = await Persistence.ReadAllAdults();
         showAdults = allAdults;
     }
 
     private void RemoveAdult(int adultID)
     {
         Adult removeAdult = allAdults.First(a => a.id == adultID);
-        Persistence.DeleteAdult(removeAdult);
+        Persistence.DeleteAdult(adultID);
         allAdults.Remove(removeAdult);
     }
 

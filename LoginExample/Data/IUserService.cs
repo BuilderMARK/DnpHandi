@@ -1,7 +1,11 @@
+﻿using System.Threading.Tasks;
 using LoginExample.Models;
 
-namespace LoginExample.Data {
-public interface IUserService {
-    User ValidateUser(string userName, string password);
-}
+namespace ToDo.Data
+{
+    public interface IUserService
+    {
+        Task<User> ValidateUser(string username, string password);
+
+    }
 }

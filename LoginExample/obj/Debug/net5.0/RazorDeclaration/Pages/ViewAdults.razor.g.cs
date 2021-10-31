@@ -90,8 +90,8 @@ using LoginExample.Models;
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\Bent\RiderProjects\LoginExample\LoginExample\Pages\ViewAdults.razor"
-using LoginExample.Data;
+#line 4 "C:\Users\Bent\RiderProjects\LoginExample\LoginExample\Pages\ViewAdults.razor"
+using ToDo.Data;
 
 #line default
 #line hidden
@@ -105,7 +105,7 @@ using LoginExample.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 114 "C:\Users\Bent\RiderProjects\LoginExample\LoginExample\Pages\ViewAdults.razor"
+#line 115 "C:\Users\Bent\RiderProjects\LoginExample\LoginExample\Pages\ViewAdults.razor"
        
     private IList<Adult> allAdults;
     private IList<Adult> showAdults;
@@ -170,14 +170,14 @@ using LoginExample.Data;
     
     protected override async Task OnInitializedAsync()
     {
-        allAdults = Persistence.ReadAllAdults();
+        allAdults = await Persistence.ReadAllAdults();
         showAdults = allAdults;
     }
 
     private void RemoveAdult(int adultID)
     {
         Adult removeAdult = allAdults.First(a => a.id == adultID);
-        Persistence.DeleteAdult(removeAdult);
+        Persistence.DeleteAdult(adultID);
         allAdults.Remove(removeAdult);
     }
 

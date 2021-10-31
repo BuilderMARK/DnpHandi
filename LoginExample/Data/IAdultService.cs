@@ -1,13 +1,14 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using LoginExample.Models;
 
-namespace LoginExample.Data
+namespace ToDo.Data
 {
     public interface IAdultService
     {
-        IList<Adult> ReadAllAdults();
-        void AddAdult(Adult addAdult);
-        void UpdateAdult(Adult updateAdult);
-        void DeleteAdult(Adult deleteAdult);
+        Task <IList<Adult>> ReadAllAdults();
+        Task  AddAdult(Adult addAdult);
+        Task UpdateAdult(Adult updateAdult);
+        Task DeleteAdult(int deleteAdult); 
     }
-}
+    }
