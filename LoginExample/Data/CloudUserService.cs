@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using LoginExample.Models;
@@ -9,6 +10,9 @@ namespace ToDo.Data
 {
     public class CloudUserService : IUserService
     {
+        private string uri = "https://localhost:5001";
+
+        private readonly HttpClient client;
         public async Task<User> ValidateUser(string username, string password)
         {
             
@@ -27,5 +31,14 @@ namespace ToDo.Data
             } 
             throw new Exception("User not found");
         }
+
+        public async Task AddUser(User addUser)
+        {
+            string userAsJson = JsonSerializer.Serialize(addUser);
+                HttpContent content = new StringContent(userAsJson,
+                    Encoding.UTF8,
+                    "application/json");
+                await client.PostAsync(uri + "/User", content);
+            }
+        }
     }
-}

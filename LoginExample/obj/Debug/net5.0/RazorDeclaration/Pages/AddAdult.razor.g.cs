@@ -114,7 +114,6 @@ using ToDo.Data;
 #line 75 "C:\Users\Bent\RiderProjects\LoginExample\LoginExample\Pages\AddAdult.razor"
        
     private Adult addAdult = new Adult();
-    private string errorLabel;
 
     private void AddNewAdult()
     {

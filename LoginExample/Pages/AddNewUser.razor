@@ -1,0 +1,69 @@
+﻿@page "/AddNedUser"
+@using Microsoft.AspNetCore.Components
+@using LoginExample.Models
+@using ToDo.Data
+@inject NavigationManager _NavigationManager
+@inject IUserService _Persistence
+
+<h3>AddNewUser</h3>
+
+<label>Fill in all of the fields</label>
+<EditForm Model="@newUserAccount" OnValidSubmit="@AddUserAccount">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class="form-group">
+        First name:<br/>
+        <InputText @bind-Value="newUserAccount.UserName"/>
+    </div>
+    <div class="form-group">
+        Last name:<br/>
+        <InputText @bind-Value="newUserAccount.Password"/>
+    </div>
+    <div class="form-group">
+        Job title:<br/>
+        <InputText @bind-Value="newUserAccount.City"/>
+    </div>
+    <div class="form-group">
+        Hair color:<br/>
+       <InputSelect @bind-Value="newUserAccount.Domain">
+                   <option value="">Select HairColor ...</option>
+                   <option value="Blue">Blue</option>
+                   <option value="Green">Green</option>
+                   <option value="Red">Red</option>
+                   <option value="Black">Black</option>
+                   <option value="White">White</option>
+                   <option value="LimeRed">LimeRed</option>
+               </InputSelect>
+    </div>
+    <div class="form-group">
+        Eye color:<br/>
+           <InputSelect @bind-Value="newUserAccount.SecurityLevel">
+                          <option value="">Select SecurityLevel ...</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+           </InputSelect>
+    </div>
+    <div class="form-group">
+        Age:<br/>
+        <InputNumber @bind-Value="newUserAccount.BirthYear"/>
+    </div>
+    <p class="actions">
+        <button class="btn btn-outline-dark" type="submit">Create</button>
+    </p>
+</EditForm>
+@code {
+
+    public User newUserAccount = new User();
+    
+    
+    private void AddUserAccount()
+    {
+        _Persistence.AddUser(newUserAccount);
+        _NavigationManager.NavigateTo("/ViewAdults");
+    }
+
+
+}
